@@ -5,7 +5,7 @@ from math import ceil
 import math;
 import BackDropClass;
 import pickle;
-
+import collections;
 
 from BackDropClass import BackDropClass;
 from numpy import append
@@ -13,9 +13,12 @@ def setConditions(column):
     
     #previously 45
     
-    if column["delay"] > 7:
+    if column["delay"] > 15 and column["delay"] <= 30:
         return 1
-    
+    elif column["delay"] > 30 and column["delay"] <= 45:
+        return 2
+    elif column["delay"] > 45:
+        return 3
     
     else:
         return 0;
@@ -54,7 +57,36 @@ print data;
 
 #list_u_customer_numbers = [];
 
-list_u_customer_numbers = np.unique(data['customer_number']);
+
+
+#list_customer_numbers = [];
+
+list_customer_numbers = data['customer_number'];
+
+print list_customer_numbers;
+
+counter = collections.Counter(list_customer_numbers);
+
+list_customer_numbers_and_count = counter.most_common();
+
+#print list_customer_numbers_and_count;
+
+#list_customer_numbers = data['customer_number'];
+
+print len(list_customer_numbers_and_count);
+
+sorted_customer_list = [];
+
+for i in range(len(list_customer_numbers_and_count)):
+    sorted_customer_list.append(list_customer_numbers_and_count[i][0]);
+    
+print sorted_customer_list;
+
+
+
+#list_u_customer_numbers = np.unique(data['customer_number']);
+
+list_u_customer_numbers =sorted_customer_list;
 
 print type(list_u_customer_numbers);
 
@@ -70,7 +102,7 @@ customer_number = 0;
 
 
 #len(list_u_customer_numbers)
-for i in range(10):
+for i in range(2):
     #customer_number = list_u_customer_numbers[i];
     df = data.groupby(['customer_number']).get_group(list_u_customer_numbers[i]);
     print df;
@@ -114,15 +146,21 @@ for i in range(10):
 #     
 #     label_1 = df[df["labels"] == 1];
 #     
+#     label_2 = df[df["labels"] == 2];
+#     
+#     label_3 = df[df["labels"] == 3];
+#     
 #     df_0 = df[df["labels"] == 0];
 #     
-#     df_0 = df_0[-len(df["labels"]):]
+#     df_0 = df_0[-len(label_1):]
 #     
 #     df_1 = label_1;
 #     
 #     final_df = [df_0,df_1];
 #     
 #     df = pd.concat(final_df);
+#     
+#     print df;
 #     
 #     print df["open_amount"];
 #     
@@ -138,10 +176,10 @@ for i in range(10):
     
     Y = np.array(df_labels);
     
-    K = 2;
+    K = 4;
     
-    M = 2;
-    
+    #M = 2;
+    M = 4;
     N,D = X.shape;
     
     T = np.zeros((N,K));
@@ -212,7 +250,7 @@ for i in range(10):
     bias_1.append(b1);
     bias_2.append(b2);
     
-
+#shift+tab for methods shorcut;
 print "weights_2",weights_2;
 print "weights_1",weights_1;
 print "bias_1",bias_1;
@@ -231,7 +269,7 @@ final_df['bias_1'] = bias_1;
 final_df['bias_2'] = bias_2;
 
 
-final_df["customer_number"] = list_u_customer_numbers[:10];
+final_df["customer_number"] = list_u_customer_numbers[:2];
 
 
 # for i in range(2):
@@ -242,9 +280,9 @@ print final_df;
 
 #final_df = pickle.dumps(final_df.p,protocol=0);
 
-final_df = pickle.dump(final_df,open("final_df.p","wb"));
+final_df = pickle.dump(final_df,open("final_multiclass_df.p","wb"));
 
-print list_u_customer_numbers[:10];
+print list_u_customer_numbers[:2];
 #final_df.to_csv("weights.csv",columns=['customer_number','weights_1','weights_2','bias_1','bias_2']);
 
 

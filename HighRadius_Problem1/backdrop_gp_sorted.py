@@ -5,7 +5,7 @@ from math import ceil
 import math;
 import BackDropClass;
 import pickle;
-
+import collections;
 
 from BackDropClass import BackDropClass;
 from numpy import append
@@ -54,7 +54,36 @@ print data;
 
 #list_u_customer_numbers = [];
 
-list_u_customer_numbers = np.unique(data['customer_number']);
+
+
+#list_customer_numbers = [];
+
+list_customer_numbers = data['customer_number'];
+
+print list_customer_numbers;
+
+counter = collections.Counter(list_customer_numbers);
+
+list_customer_numbers_and_count = counter.most_common();
+
+#print list_customer_numbers_and_count;
+
+#list_customer_numbers = data['customer_number'];
+
+print len(list_customer_numbers_and_count);
+
+sorted_customer_list = [];
+
+for i in range(len(list_customer_numbers_and_count)):
+    sorted_customer_list.append(list_customer_numbers_and_count[i][0]);
+    
+print sorted_customer_list;
+
+
+
+#list_u_customer_numbers = np.unique(data['customer_number']);
+
+list_u_customer_numbers =sorted_customer_list;
 
 print type(list_u_customer_numbers);
 
@@ -109,14 +138,14 @@ for i in range(10):
 #     
 #     print type(model);
 
-    #classimbalance      
+#     #classimbalance      
 #     label_0 = df[df["labels"] == 0];
 #     
 #     label_1 = df[df["labels"] == 1];
 #     
 #     df_0 = df[df["labels"] == 0];
 #     
-#     df_0 = df_0[-len(df["labels"]):]
+#     df_0 = df_0[-len(label_1):]
 #     
 #     df_1 = label_1;
 #     
@@ -231,7 +260,7 @@ final_df['bias_1'] = bias_1;
 final_df['bias_2'] = bias_2;
 
 
-final_df["customer_number"] = list_u_customer_numbers[:10];
+final_df["customer_number"] = list_u_customer_numbers[:2];
 
 
 # for i in range(2):
@@ -244,7 +273,7 @@ print final_df;
 
 final_df = pickle.dump(final_df,open("final_df.p","wb"));
 
-print list_u_customer_numbers[:10];
+print list_u_customer_numbers[:2];
 #final_df.to_csv("weights.csv",columns=['customer_number','weights_1','weights_2','bias_1','bias_2']);
 
 

@@ -3,10 +3,10 @@ import numpy as np;
 import datetime
 
 
-class backdrop_module(object):
+class BackDropClass(object):
 
     
-    def __init__(self,df=[1,1,1,1]):
+    def __init__(self,df={}):
         
         self.df = df;
         
@@ -26,13 +26,14 @@ class backdrop_module(object):
         Y = expA / expA.sum(axis=1, keepdims=True)
         return Y, self.Z
 
-    def classification_rate(self,Y, P):
+    def classification_rate(self,Y,P):
         n_correct = 0
         n_total = 0
         self.Y = Y;
+        self.P = P;
         for i in xrange(len(self.Y)):
             n_total += 1
-            if self.Y[i] == P[i]:
+            if self.Y[i] == self.P[i]:
                 n_correct += 1
         return float(n_correct) / n_total
 
@@ -45,7 +46,7 @@ class backdrop_module(object):
         M = self.Z.shape[1] # H is (N, M)
     
         # fastest - let's not loop over anything
-        ret4 = self.Z.self.T.dot(self.T - self.Y)
+        ret4 = (self.Z).T.dot((T) - (self.Y))
         # assert(np.abs(ret1 - ret4).sum() < 0.00001)
     
         return ret4
@@ -62,9 +63,9 @@ class backdrop_module(object):
 
     
         # fastest
-        dZ = (self.T - self.Y).dot(self.W2.self.T) * self.Z * (1 - self.Z) #sigmoid
+        dZ = (T - self.Y).dot((self.W2).T) * (self.Z) * (1 - self.Z) #sigmoid
         #dZ = (T - Y).dot(W2.T) * (Z > 0) #relu
-        ret2 = self.X.self.T.dot(dZ)
+        ret2 = self.X.T.dot(dZ)
     
         # assert(np.abs(ret1 - ret2).sum() < 0.00001)
     
@@ -82,7 +83,7 @@ class backdrop_module(object):
         self.Y = Y;
         self.W2 = W2;
         self.Z = Z;
-        return ((self.T - self.Y).dot(self.W2.self.T) * self.Z * (1 - self.Z)).sum(axis=0) #sigmoid
+        return ((T - self.Y).dot((self.W2).T) * self.Z * (1 - self.Z)).sum(axis=0) #sigmoid
          #return ((T - Y).dot(W2.T) * (Z > 0)).sum(axis=0) #relu
 
 
