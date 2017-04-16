@@ -13,12 +13,16 @@ def setConditions(column):
     
     #previously 45
     
-    if column["delay"] > 15 and column["delay"] <= 30:
+    if column["delay"] >= 0 and column["delay"] < 7:
         return 1
-    elif column["delay"] > 30 and column["delay"] <= 45:
+    elif column["delay"] >= 7 and column["delay"] < 15:
         return 2
-    elif column["delay"] > 45:
+    elif column["delay"] >= 15 and column["delay"] <30:
         return 3
+    elif column["delay"] >=30 and column["delay"] <60:
+        return 4
+    elif column["delay"] > 60:
+        return 5
     
     else:
         return 0;
@@ -176,10 +180,10 @@ for i in range(2):
     
     Y = np.array(df_labels);
     
-    K = 4;
+    K = 6;
     
     #M = 2;
-    M = 4;
+    M = 8;
     N,D = X.shape;
     
     T = np.zeros((N,K));
@@ -194,7 +198,7 @@ for i in range(2):
     W2 = np.random.randn(M, K)
     b2 = np.random.randn(K)
 
-    #learning_rate = 10e-7
+    #learning_rate = 10e-7 -9#last
     learning_rate = 10e-6;#higher learning rate converges very fast;
     costs = []
     print "Number of rows of customer data",len(X);
@@ -280,7 +284,7 @@ print final_df;
 
 #final_df = pickle.dumps(final_df.p,protocol=0);
 
-final_df = pickle.dump(final_df,open("final_multiclass_df.p","wb"));
+final_df = pickle.dump(final_df,open("final_multiclass_df_2.p","wb"));
 
 print list_u_customer_numbers[:2];
 #final_df.to_csv("weights.csv",columns=['customer_number','weights_1','weights_2','bias_1','bias_2']);

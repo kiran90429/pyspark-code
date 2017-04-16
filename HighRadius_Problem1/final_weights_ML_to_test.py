@@ -11,16 +11,20 @@ import collections;
 def setConditions(column):
     
     #previously 45
-    
-    if column["delay"] > 15 and column["delay"] <= 30:
+    if column["delay"] >= 0 and column["delay"] < 7:
         return 1
-    elif column["delay"] > 30 and column["delay"] <= 45:
+    elif column["delay"] >= 7 and column["delay"] < 15:
         return 2
-    elif column["delay"] > 45:
+    elif column["delay"] >= 15 and column["delay"] <30:
         return 3
+    elif column["delay"] >=30 and column["delay"] <60:
+        return 4
+    elif column["delay"] > 60:
+        return 5
     
     else:
         return 0;
+
 
 def weekOfMonth(date):
     year,month,day = (int(x) for x in date.split('-'))
@@ -52,7 +56,7 @@ def giveMeMonth(date):
 #weights_data = pd.read_csv("weights.csv",sep=",",dtype=None);
 
 #deserialization:
-weights_data = pickle.load(open("final_multiclass_df.p","rb")); 
+weights_data = pickle.load(open("final_multiclass_df_2.p","rb")); 
     
 
 data = pd.read_csv("D:\largefiles\\fp_acctdocheader_fleetpride_open_last100k.csv",usecols=['customer_number','doctype','due_date','update_date','open_amount']);
@@ -121,7 +125,7 @@ for i in range(10):
     
     df = df.assign(labels = df.apply(setConditions,axis=1));    
     
-    print df["labels"];
+    #print df["labels"];
     
     Yt = np.array(df["labels"]);
 

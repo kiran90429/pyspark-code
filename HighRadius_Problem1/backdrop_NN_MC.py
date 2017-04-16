@@ -14,22 +14,27 @@ def setConditions(column):
     #previously 45
     
     #14
-    if column["final_delay"] > 7:
+    if column["final_delay"] >= 0 and column["final_delay"] < 7:
         return 1
-    
+    elif column["final_delay"] >= 7 and column["final_delay"] < 15:
+        return 2
+    elif column["final_delay"] >= 15 and column["final_delay"] <30:
+        return 3
+    elif column["final_delay"] >=30 and column["final_delay"] <60:
+        return 4
+    elif column["final_delay"] > 60:
+        return 5
     
     else:
         return 0;
 
-
-
 def forward(X, W1, b1, W2, b2):
     Z = 1 / (1 + np.exp(-X.dot(W1) - b1))#sigmoid
     
-    # rectifier
+    #rectifier
 #     Z = X.dot(W1) + b1
 #     Z[Z < 0] = 0
-    
+#     
     
     A = Z.dot(W2) + b2
     expA = np.exp(A)
@@ -258,10 +263,10 @@ def main():
    
     
     
-    K = 2;
+    K = 6;
     
     #changed M = 3;
-    M = 2; # Same Accuracy for 4 neural networks also. for class > 7
+    M = 3; # Same Accuracy for 4 neural networks also. for class > 7
     
     N,D = X.shape;
     
@@ -271,9 +276,9 @@ def main():
         T[i, Y[i]] = 1
 
     # let's see what it looks like
-    plt.scatter(X[:,0], X[:,1], c=Y, s=100, alpha=0.5)
-    plt.show()
-    
+#     plt.scatter(X[:,0], X[:,1], c=Y, s=100, alpha=0.5)
+#     plt.show()
+#     
     
     #testing block;
     # testing with the dataset
@@ -331,8 +336,8 @@ def main():
     W2 = np.random.randn(M, K)
     b2 = np.random.randn(K)
 
-    #learning_rate = 10e-7
-    learning_rate = 10e-6;#higher learning rate converges very fast;
+    #learning_rate = 10e-7#10-12 for relu
+    learning_rate = 10e-9;#higher learning rate converges very fast;
     costs = []
     for epoch in xrange(100000):
         output, hidden = forward(X, W1, b1, W2, b2)
